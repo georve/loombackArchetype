@@ -1,0 +1,27 @@
+version: '3.0'
+
+services:
+  api:
+    build: .
+    container_name: crm_api
+    ports:
+      - 3001:3000
+    volumes:
+      - .:/usr/src/api
+    command: bash -c "npm run build && npm run migrate -- --rebuild && npm start"
+    depends_on:
+      - mysql_db
+
+  mysql_db:
+    image: mysql:5.7.24
+    container_name: mysql_crm
+    ports:
+      - 3306:3306
+    volumes:
+      - db-data:/var/lib/mysql
+    command: --character-set-server=utf8
+    restart: always
+    env_file: .env
+
+volumes:
+  db-data:
