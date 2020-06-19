@@ -2,8 +2,8 @@
 
 import {authenticate} from '@loopback/authentication';
 import {inject} from '@loopback/core';
-import {repository} from '@loopback/repository';
-import {get, getJsonSchemaRef, post, requestBody} from '@loopback/rest';
+import {repository, Filter} from '@loopback/repository';
+import {get, getJsonSchemaRef, post, requestBody, getModelSchemaRef, param} from '@loopback/rest';
 import * as _ from 'lodash';
 import {TokenServiceBinding} from '../keys';
 import {User} from '../models/user.model';
@@ -80,6 +80,28 @@ export class UserController {
   @authenticate('jwt')
   async me(): Promise<string> {
     return Promise.resolve('Hola mundo');
+  }
+
+  @get('/users/users', {
+    responses: {
+      '200': {
+        description: 'Array of Users model instances',
+        content: {
+          'application/json': {
+            schema: {
+              type: 'array',
+              items: getModelSchemaRef(User, {includeRelations: true}),
+            },
+          },
+        },
+      },
+    },
+  })
+  @authenticate('jwt')
+  async find(
+    @param.filter(User) filter?: Filter<User>,
+  ): Promise<User[]> {
+    return this.userRepository.find(filter);
   }
 
 }

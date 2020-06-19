@@ -4,8 +4,8 @@ import {juggler} from '@loopback/repository';
 const config = {
   name: 'db',
   connector: 'mysql',
-  url: 'mysql://crm:abc123@127.0.0.1/auth_crm',
-  host: '127.0.0.1',
+  url: 'mysql://crm:abc123@localhost/auth_crm',
+  host: 'localhost',
   port: 3306,
   user: 'crm',
   password: 'abc123',

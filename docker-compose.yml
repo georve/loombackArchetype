@@ -11,6 +11,8 @@ services:
     command: bash -c "npm run build && npm run migrate -- --rebuild && npm start"
     depends_on:
       - mysql_db
+    links:
+      - mysql_db
 
   mysql_db:
     image: mysql:5.7.24
